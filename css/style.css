@@ -212,6 +212,8 @@ section{
 .about .row .content h3{
     font-size: 3.5rem;
     color:#fff;
+    background-color: rgba(0,0,0,0.7);
+    padding: 5px;
 }
 
 .about .row .content p{
@@ -219,6 +221,8 @@ section{
     color:#eee;
     padding:1rem 0;
     line-height: 2;
+    background-color: rgba(0,0,0,0.7);
+    padding: 5px;
 }
 
 .gallery .box-container{
