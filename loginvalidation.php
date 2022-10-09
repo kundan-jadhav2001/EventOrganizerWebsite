@@ -1,59 +1,53 @@
 <?php
 session_start();
 
-    if(isset($_SESSION['username'])){
-        header("location: index.php");
-        exit;
-    }
-    require_once "config.php";
+    $DB_SERVER = 'localhost';
+    $DB_USERNAME = 'root';
+    $DB_PASSWORD = '';
+    $DB_NAME = 'eventmanagement';
 
-    $username = $password = '';
+    $conn = mysqli_connect($DB_SERVER, $DB_USERNAME, $DB_PASSWORD, $DB_NAME);
+
+    if(!$conn){
+        die('Connection failed: '. mysqli_connect_error());
+    }
+
+    $username = $password = $err = '';
 
     if ($_SERVER['REQUEST_METHOD']=='POST'){
-        if(empty(trim($_POST['username'])) || empty(trim($_POST['password']))){
-            $err = "please enter the values...";
-        }
-    if(empty($err)){
-        $sql = "select username, password from logininfo where username = ?";
-        $stmt = mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, "s", $param_username);
-        $param_username = $username;
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $result = '';
 
-        if(mysqli_stmt_execute($stmt)){
-            mysqli_stmt_store_result($stmt);
-            if(mysqli_stmt_num_rows($stmt) == 1){
-                    mysqli_stmt_bind_result($stmt, $username, $hashed_password);
-                    if(mysqli_stmt_fetch($stmt)){
-                        if(password_verify($password, $hashed_password)){
-                            // this means the password is corrct. Allow user to login
-                            session_start();
-                            $_SESSION["username"] = $username;
-                            $_SESSION["id"] = $id;
-                            $_SESSION["loggedin"] = true;
-    
-                            //Redirect user to welcome page
-                            header("location: index.php");
-                                
-                        }
-                    }
-    
+        if(!(empty(trim($username)) || empty(trim($password)))){
+            try{
+                $query = "select username, password from logininfo where username = '$username'";
+                $result = mysqli_query($conn, $query);
+            }
+            catch (Exception){
+                echo("Error occured..");
+            }
+            
+            if(mysqli_num_rows($result) > 0 ){
+                $row = $result->fetch_array();
+                $checkusername = $row['username'];
+                $checkpassword = $row['password'];
+
+                if($checkusername==$username && $checkpassword==$password){
+                    header('Location: index.php');
+                }
+                else{
+                    echo("Username or Password is incorrect...");
+                }
+
+
+            }
+            else{
+                echo("You Don't have account please Create one...");
             }
         }
-    }
 }
+
+$conn->close();
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>validated</title>
-</head>
-<body>
-    Hello you are loged in...
-
-</body>
-</html>
 
