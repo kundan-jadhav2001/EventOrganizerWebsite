@@ -57,7 +57,7 @@
 
     <div class="content">
         <h3>its time to celebrate! the best <span> event organizers </span></h3>
-        <a href="logineventpage.php" class="btn">Login</a>
+        <a href="login.php" class="btn">Login</a>
     </div>
 
     <div class="swiper-container home-slider">

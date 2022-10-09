@@ -1,4 +1,3 @@
-<?php session_start(); ?>
 <?php
 $servername = "localhost";
 $username = "root";
@@ -6,11 +5,11 @@ $password = "";
 $database = "eventmanagement"
 
 // Create connection
-$con = new mysqli($servername, $username, $password, $database);
+$conn = mysqli_connect($servername, $username, $password, $database);
 
 // Check connection
-if ($con->connect_error) {
-    die("Connection failed: " . $con->connect_error);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 echo "Connected successfully";
 ?>
@@ -24,7 +23,7 @@ echo "Connected successfully";
     <title>validated</title>
 </head>
 <body>
-    Hello you are loged in...
+    Hello you are signed up...
 
 </body>
 </html>
